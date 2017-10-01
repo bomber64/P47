@@ -1,0 +1,363 @@
+<?xml version="1.0"?>
+
+<PropertyList>
+
+    <sim>
+
+        <description>P47D Thunderbolt</description>
+        <author>Syd Adams, Swamp, Nikolai V. Chr., pinto, 5H1N0B1, Spectre (liveries)</author>
+        <flight-model>jsb</flight-model>
+        <aero>P47dJSBsim</aero>
+        <fuel-fraction>0.8</fuel-fraction>
+        <startup>
+            <splash-texture>Aircraft/P47/splash.png</splash-texture>
+        </startup>
+
+        <model>
+            <path>Aircraft/P47/Models/P47D-30.xml</path>
+            <livery>
+                <file type="string">default</file>
+            </livery>
+    
+        </model>
+        <sound>
+            <path>Aircraft/P47/Sound/p47.xml</path>
+        </sound>
+        <instrumentation>
+            <path>Aircraft/P47/instrumentation.xml</path>
+        </instrumentation>
+
+       <submodels> 
+      	<serviceable type="bool">true</serviceable>
+      		<path>Aircraft/P47/Models/Effects/guns/submodels.xml</path>
+       </submodels>
+
+        <allow-toggle-cockpit archive="y">true</allow-toggle-cockpit>
+
+		<flight-recorder>
+            <replay-config type="int">0</replay-config>
+            <config n="0">
+                <signals include="/Aircraft/Generic/flightrecorder/components/engine-piston-prop.xml"/>                    
+                <signals include="/Aircraft/Generic/flightrecorder/components/environment.xml"/>
+                <signals include="/Aircraft/Generic/flightrecorder/components/position.xml"/>
+                <signals include="/Aircraft/Generic/flightrecorder/components/controls.xml"/>
+                <signals include="/Aircraft/Generic/flightrecorder/components/surfaces.xml"/>
+                <signals include="/Aircraft/Generic/flightrecorder/components/gear-retractable.xml">
+                    <count type="int">3</count>
+                </signals>
+                <signals include="/Aircraft/Generic/flightrecorder/components/faults-engines.xml">
+                    <count type="int">1</count>
+                </signals>
+            <signal>
+                <type>float</type><property type="string">gear/brake-thermal-energy</property>
+            </signal>
+            <signal>
+                <type>double</type>
+                <property type="string">engines/engine/energizer</property>
+            </signal>
+            <signal>
+                <type>double</type>
+                <property type="string">engines/engine[0]/mp-inhg</property>
+            </signal>
+            <signal>
+                <type>float</type>
+                <property type="string">gear/gear[0]/compression-m</property>
+            </signal>
+            <signal>
+                <type>float</type>
+                <property type="string">gear/gear[1]/compression-m</property>
+            </signal>
+            <signal>
+                <type>float</type>
+                <property type="string">gear/gear[2]/compression-m</property>
+            </signal>
+			<name type="string">P47</name>
+            </config>
+        </flight-recorder>	
+
+
+<!--        <systems>
+             <autopilot>
+                <path>Aircraft/P47/Systems/autopilot.xml</path>
+            </autopilot>
+        </systems> -->
+
+
+        <view>
+            <internal archive="y">true</internal>
+            <config>
+                <!-- x/y/z == right/up/back -->
+                <x-offset-m archive="y">0</x-offset-m>
+                <y-offset-m archive="y">0.905</y-offset-m>
+                <z-offset-m archive="y">-0.003</z-offset-m>
+                <pitch-offset-deg>-8</pitch-offset-deg>
+                <limits>
+                    <enabled type="bool">true</enabled>
+                    <left>
+                        <heading-max-deg type="double">150</heading-max-deg>
+                        <x-offset-max-m type="double">0.13</x-offset-max-m>
+                        <x-offset-threshold-deg type="double">45</x-offset-threshold-deg>
+                    </left>
+                    <right>
+                        <heading-max-deg type="double">150</heading-max-deg>
+                        <x-offset-max-m type="double">0.13</x-offset-max-m>
+                        <x-offset-threshold-deg type="double">45</x-offset-threshold-deg>
+                    </right>
+                </limits>
+            </config>
+        </view>
+
+        <chase-distance-m type="double" archive="y">-20.0</chase-distance-m>
+
+<menubar include="./Dialogs/P47D-menu.xml"/>
+
+ <multiplay>
+      <chat_display>1</chat_display>
+      <generic>
+        <!-- ' immat -->
+        <int type="int"       n="0"> 0 </int>
+        <int type="int"       n="1"> 0 </int>
+        <int type="int"       n="2"> 0 </int>
+        <int type="int"       n="3"> 0 </int>
+        <int type="int"       n="4"> 0 </int>
+        <int type="int"       n="5"> 0 </int>
+        <int type="int"       n="6"> 0 </int>
+        <int type="int"       n="17"> 0 </int>	
+        <int type="int"       n="18"> 0 </int>		
+        <int type="int"       n="19"> 0 </int>		
+        <int n="0" alias="/sim/failure-manager/engines/engine/serviceable"/>
+
+     </generic>
+    </multiplay>
+
+
+    <help>
+        <title>P-47 Checklist</title>
+        <line></line> 
+        <line></line>
+        <line></line> 
+        <line> 1:Throttle open half inch ( PgUp / PgDn )</line>
+        <line> 2:Prop lever full forward ( N / n )</line>
+        <line>#############</line>
+        <line>Startup</line>
+        <line>#############</line>
+        <line> 1:Mags on 'BOTH'</line>
+        <line> 2:Battery on</line>
+        <line> 3:Fuel Cock switched to Main Tank</line>		
+        <line> 4:Pump primer twice (shift r)</line>
+        <line> 5:Hold energizer 15 seconds</line>
+        <line> 6:Engage starter ( s )</line>
+        <line>----------------------------</line> 
+    </help>
+    </sim>
+
+ 
+
+<consumables>
+        <fuel>
+            <tank n="0">
+                <name>Fuselage Main Tank</name>
+      <selected type="bool">true</selected>
+            </tank>
+            <tank n="1">
+                <name>Fuselage Auxilary Tank</name>
+            </tank>
+      <selected type="bool">true</selected>
+            <tank n="2">
+                <name>Drop Tank</name>
+      <selected type="bool">true</selected>
+            </tank>
+        </fuel>
+    </consumables>
+
+    <controls>
+        <gear>
+            <brake-parking>1</brake-parking>
+        </gear>
+        <engines>
+            <engine n="0">
+                <cowl-flaps-norm>0</cowl-flaps-norm>
+                <selected type="bool">1</selected>
+                <wastegate type="double">1</wastegate>
+                <boost type="bool">1</boost>
+                <mag-switch type="double">-1</mag-switch>
+                <primer type="double">0</primer>
+                <energizer type="double">0</energizer>
+            </engine>
+        </engines>
+        <electric>
+            <battery-switch>0</battery-switch>
+            <engine>
+                <generator>1</generator>
+            </engine>
+        </electric>
+        <lighting>
+            <instrument-lights type="bool">1</instrument-lights>
+        </lighting>
+        <armament>
+            <guns type="bool">0</guns>
+            <ammo type="double">0</ammo><!--350 rounds per gun-->
+        </armament>
+    </controls>
+
+    <engines>
+        <engine>
+            <energizer type="double">0</energizer>
+        </engine>
+    </engines>
+
+ <fdm>
+  <jsbsim>
+    <structural>
+      <wings>
+        <serviceable type="bool">true</serviceable>
+      </wings>
+    </structural>   
+    <simulation>
+     <sim-time-sec>0</sim-time-sec>
+    </simulation>
+   <systems>
+      <armament>
+      <station1>
+        <selected type="double">0</selected>
+      </station1>
+      <station2>
+        <selected type="double">0</selected>
+      </station2>
+      <station3>
+        <selected type="double">0</selected>
+      </station3>
+      <station4>
+        <selected type="double">0</selected>
+      </station4>
+      <station5>
+        <selected type="double">0</selected>
+      </station5>
+      <station6>
+        <selected type="double">0</selected>
+      </station6>
+      <station7>
+        <selected type="double">0</selected>
+      </station7>
+      <station8> <!-- centerline -->
+        <selected type="double">0</selected>
+      </station8>
+    </armament> 
+   </systems> 
+  </jsbsim>
+ </fdm>
+
+	<input>
+        <keyboard>
+          <!--  <key n="119">
+                <name>w</name>
+                <desc>Increase wastegate</desc>
+                <repeatable>true</repeatable>
+                <binding>
+                    <command>nasal</command>
+                    <script>p47.wastegate(1)</script>
+                </binding>
+            </key> -->
+			
+	<key n="82">
+		<name>R</name>
+		<desc>Engine Prime</desc>
+			<binding>
+			  <command>property-assign</command>
+			  <property>fdm/jsbsim/propulsion/engine[0]/prime-hand</property>
+			  <value>0.25</value>
+			</binding>
+		<mod-up>
+			<binding>
+			  <command>property-assign</command>
+			  <property>fdm/jsbsim/propulsion/engine[0]/prime-hand</property>
+			  <value>0</value>
+			</binding>
+		</mod-up>
+	</key>
+ 
+	<key n="100">
+		<name>d</name>
+		<desc>Toggle smoke</desc>
+		<binding>
+			<command>property-toggle</command>
+			<property>sim/multiplay/generic/int[19]</property>
+		</binding>
+	</key>
+
+			<!--    <key n="87">
+					<name>W</name>
+					<desc>Decrease wastegate</desc>
+					<repeatable>true</repeatable>
+					<binding>
+						<command>nasal</command>
+						<script>p47.wastegate(-1)</script>
+					</binding>
+				</key> -->
+
+
+	<key n="101">
+		<name>e</name>
+		<desc>Fire MG</desc>
+		<binding>
+			<command>property-toggle</command>
+			<property>controls/armament/trigger</property>
+		</binding>
+		<mod-up>
+			<binding>
+				<command>property-toggle</command>
+				<property>controls/armament/trigger</property>
+			</binding>
+		</mod-up>
+	</key>
+	  
+	<key n="102">
+		<name>f</name>
+		<desc>Fuel Selector Cock</desc>
+		<binding>
+			<command>property-adjust</command>
+			<property>fdm/jsbsim/propulsion/fuel_selector_switch</property>
+			<step>1</step>
+			<min>0</min>
+			<max>4</max>
+			<wrap>true</wrap>
+		</binding>
+	</key>
+
+	<key n="70">
+		<name>F</name>
+		<desc>Fuel Selector Cock</desc>
+		<binding>
+			<command>property-adjust</command>
+			<property>fdm/jsbsim/propulsion/fuel_selector_switch</property>
+			<step>-1</step>
+			<min>0</min>
+			<max>4</max>
+			<wrap>true</wrap>
+		</binding>	
+	</key>
+	
+	</keyboard>
+</input>
+
+<nasal>
+    <p47>
+	
+<!--
+    <file>Aircraft/P47/Nasal/P47.nas</file> 
+    <file>Aircraft/P47/Nasal/Electrical.nas</file>
+    <file>Aircraft/P47/Nasal/damage.nas</file>
+    <file>Aircraft/P47/Nasal/blackout.nas</file>
+    <file>Aircraft/P47/Nasal/liveries.nas</file>
+    <file>Aircraft/P47/Nasal/crash-and-stress.nas</file>
+-->
+
+    </p47>
+	<guns>
+		<file>Aircraft/P47/Nasal/payloads.nas</file>
+	</guns>
+</nasal>
+
+
+
+</PropertyList>

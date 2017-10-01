@@ -1,0 +1,395 @@
+<?xml version="1.0"?>
+
+<!--
+**************************************************************************
+
+Copyright (c) 2016 Simon 'bomber' Morley
+simonbomber64 at googlemail.com
+
+This work is licensed under the 
+Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License. 
+To view a copy of this license, 
+visit http://creativecommons.org/licenses/by-nc-sa/3.0/ or 
+send a letter to Creative Commons, PO Box 1866, Mountain View, Cd 94042, USA.
+
+Attribution,  You must give appropriate credit, provide a link to the license, 
+and indiCdte if changes were made. You may do so in any reasonable manner, 
+but not in any way that suggests the licensor endorses you or your use.
+
+NonCommercial,  You may not use the material for commercial purposes.
+
+ShareAlike,  If you remix, transform, or build upon the material, 
+you must distribute your contributions under the same license as the original. 
+
+**************************************************************************
+-->
+
+<system name="Engine">
+
+<property type="bool" value="1"> propulsion/engine[0]/intake/ve-factor</property>
+<property type="bool" value="1"> propulsion/engine[0]/intake/bsfc-factor</property>
+ 
+    <channel name="Mixture Control">
+
+	<fcs_function name="propulsion/atmosphere/P-inhg">
+		<function>
+			<product>
+				<property> atmosphere/P-psf </property>
+				<value> 0.01414 </value>
+			</product>
+		</function>
+	</fcs_function>
+
+	<fcs_function name="propulsion/engine[0]/pepi">	
+		<function>	
+			<quotient>	
+				 <property> propulsion/atmosphere/P-inhg </property>
+				 <property> propulsion/engine[0]/map-inhg </property>
+			</quotient>
+		</function>
+	</fcs_function>
+
+	<fcs_function name="propulsion/engine[0]/intake/volumetric-efficiency">
+		<function>
+			<table>
+				<independentVar>propulsion/engine[0]/pepi</independentVar>
+				<tableData>
+					0.2251	0.615
+					0.2277	0.63
+					0.2350	0.644
+					0.2467	0.658
+					0.2583	0.672
+					0.2700	0.687
+					0.2817	0.7005
+					0.2933	0.714
+					0.3060	0.724
+					0.3190	0.735
+					0.3329	0.742
+					0.3467	0.751
+					0.3612	0.76
+					0.3755	0.77
+					0.3907	0.777
+					0.4067	0.785
+					0.4231	0.793
+					0.4402	0.8
+					0.4574	0.806
+					0.4752	0.815
+					0.4940	0.823
+					0.5131	0.828
+					0.5329	0.8335
+					0.5531	0.84
+					0.5738	0.848
+					0.5957	0.855
+					0.6181	0.8667
+					0.6417	0.903
+					0.6655	0.947
+					0.6902	0.992
+					0.7124	1.034
+				</tableData>
+			</table>
+		</function>
+	</fcs_function>
+	
+	<fcs_function>
+		<function>			
+			<product>
+				<property> propulsion/engine[0]/intake/volumetric-efficiency </property>
+				<table>
+					<independentVar>propulsion/engine[0]/engine-rpm</independentVar>
+					<tableData>
+						1000	0.47
+						1700	0.58
+						1850	0.641
+						2150	0.75
+						2250	0.76
+						2550	1
+						2700	1.194
+					</tableData>
+				</table>
+			</product>
+		</function>
+		<output>propulsion/engine[0]/volumetric-efficiency</output>		
+	</fcs_function>
+	
+	<fcs_function name="propulsion/engine[0]/intake/bsfc-lbs_hphr">
+		<function>
+			<table>
+				<independentVar>propulsion/engine[0]/pepi</independentVar>
+				<tableData>
+					0.2251	0.425
+					0.2277	0.441
+					0.2350	0.4564
+					0.2467	0.4712
+					0.2583	0.4853
+					0.2700	0.4994
+					0.2817	0.5119
+					0.2933	0.52
+					0.3060	0.5242
+					0.3190	0.529
+					0.3329	0.5273
+					0.3467	0.525
+					0.3612	0.527
+					0.3755	0.53
+					0.3907	0.5308
+					0.4067	0.5306
+					0.4231	0.5317
+					0.4402	0.5297
+					0.4574	0.5258
+					0.4752	0.5317
+					0.4940	0.5338
+					0.5131	0.5299
+					0.5329	0.5286
+					0.5531	0.5258
+					0.5738	0.5262
+					0.5957	0.5254
+					0.6181	0.5276
+					0.6417	0.5388
+					0.6655	0.5515
+					0.6902	0.5614
+					0.7124	0.5677
+				</tableData>
+			</table>
+		</function>
+		<output>propulsion/engine[0]/intake/bsfc-lbs_hphr</output>
+	</fcs_function>
+	
+	<fcs_function>
+		<function>
+			<product>
+				<property> propulsion/engine[0]/intake/bsfc-lbs_hphr </property>
+				<table>
+					<independentVar>propulsion/engine[0]/engine-rpm</independentVar>
+					<tableData>
+						1000	0.37
+						1700	0.563
+						1850	0.554
+						2150	0.63
+						2250	0.6387
+						2550	1
+						2700	1.1686
+					</tableData>
+				</table>
+			</product>
+		</function>
+		<output>propulsion/engine[0]/bsfc-lbs_hphr</output>
+	</fcs_function>
+
+	<fcs_function name="fcs/mixture-pos-norm">
+		<function>
+			<table>
+			<independentVar>propulsion/atmosphere/P-inhg</independentVar>
+				<tableData>
+					8.60	0.37564
+					9.10	0.38884
+					9.60	0.40204
+					10.10	0.41524
+					10.60	0.42844
+					11.10	0.44164
+					11.60	0.45484
+					12.10	0.46804
+					12.60	0.48652
+					13.20	0.50500
+					13.80	0.52744
+					14.30	0.55516
+					14.90	0.57760
+					15.60	0.60136
+					16.20	0.62908
+					16.90	0.63700
+					17.60	0.66340
+					18.30	0.70300
+					19.00	0.74260
+					19.80	0.75580
+					20.60	0.77560
+					21.40	0.81520
+					22.20	0.84820
+					23.10	0.88780
+					24.00	0.92080
+					24.90	0.95380
+					25.80	0.99340
+					26.80	1.00000
+					27.80	1.00000
+					28.90	1.00000
+					29.92	1.00000
+				</tableData>
+			</table>
+		</function>
+		<output>fcs/mixture-pos-norm</output>
+	</fcs_function>
+	
+	</channel>
+	
+	<channel name="starter">
+	
+	<fcs_function name="propulsion/engine[0]/starter-norm">
+		<function> 
+			<table>
+			<independentVar>propulsion/engine[0]/propeller-rpm</independentVar>
+				<tableData>
+					0		0.00001					
+					9		0.0007
+					9.79	0.0008
+					9.8		1
+				</tableData>
+			</table>
+		</function>
+		<output>propulsion/engine[0]/starter-norm</output>   		
+	</fcs_function>
+	
+	<switch>
+		<default value="1.5"/> <!--  ENGINE COMPRESSION STOP -->
+		<test logic="AND" value="1000">
+			propulsion/engine[0]/set-running EQ 0
+			/controls/engines/engine[0]/starter EQ 0
+		</test>		
+		<output>propulsion/engine[0]/friction-hp</output>
+	</switch>	
+	
+        
+	</channel>
+	
+	<channel name="oil-usage">
+	
+		<pure_gain name="fuel/oil_usage-pps">
+			<gain>0.039286</gain>
+			<input>-propulsion/engine/fuel-flow-rate-pps</input>
+			<output>propulsion/tank[5]/external-flow-rate-pps</output>		
+		</pure_gain>
+		
+	</channel>
+	
+<property type="real" value="0"> propulsion/fuel_selector_switch</property> 
+<property type="bool" value="0"> propulsion/engine[0]/prime-hand</property>
+ 	
+	<channel name="fuel-usage">
+	
+		<switch>
+			<default value="0"/> <!--  ENGINE PRIME -->
+			<test logic="AND" value="propulsion/engine[0]/prime-hand">
+				propulsion/engine[0]/engine-rpm LT 100
+				propulsion/tank[0]/pct-full LT 100
+			</test>		
+			<output>propulsion/tank[0]/prime-flow-rate-pps</output>
+		</switch>
+		
+		<fcs_function name="propulsion/engine[0]/fuel-pump-potential-pps">
+			<function>
+				<table>
+				<independentVar lookup="row">fcs/throttle-pos-norm</independentVar>
+				<independentVar lookup="column">propulsion/engine[0]/engine-rpm</independentVar>
+					<tableData>
+							0		2000
+						0	0		0.15
+						1	0		0.55
+					</tableData>
+				</table>
+			</function>
+			<output>propulsion/engine[0]/fuel-pump-potential-pps</output>
+		</fcs_function>
+		
+		<fcs_function name="propulsion/engine[0]/fuel-pump-flow-pps">
+			<function>
+				<product>
+					<property>propulsion/engine[0]/fuel-pump-potential-pps</property>				
+					<table>
+					<independentVar>propulsion/tank[0]/pct-full</independentVar>
+						<tableData>
+							70		1.0
+							90		0.0
+						</tableData>
+					</table>
+				</product>					
+			</function>
+			<output>propulsion/engine[0]/fuel-pump-flow-pps</output>
+		</fcs_function>
+		
+		<pure_gain> <!--  ENGINE FUEL BYPASS QTY -->
+			<gain>0.03636364</gain>
+			<input>propulsion/engine[0]/fuel-flow-rate-pps</input>
+			<output>propulsion/tank[2]/bypass-flow-rate-pps</output>
+		</pure_gain>
+
+		<switch>
+			<default value="0"/> <!--  OFF OR BELLY DROP-TANK -->
+			<test logic="AND" value="-propulsion/engine[0]/fuel-pump-flow-pps">
+				propulsion/fuel_selector_switch EQ 0
+				propulsion/tank[4]/pct-full GT 0
+				propulsion/tank[0]/pct-full LT 100
+			</test>						
+			<output>propulsion/tank[4]/engine-flow-rate-pps</output>
+		</switch>
+		<summer>
+			<input>propulsion/tank[4]/engine-flow-rate-pps</input> <!--  subtracting -->		
+			<output>propulsion/tank[4]/external-flow-rate-pps</output>
+		</summer>
+		
+		<switch>
+			<default value="0"/> <!--  MAIN 'RESERVE' -->
+			<test logic="AND" value="-propulsion/engine[0]/fuel-pump-flow-pps">
+				propulsion/fuel_selector_switch EQ 1
+				propulsion/tank[1]/pct-full GT 0
+				propulsion/tank[0]/pct-full LT 100
+			</test>			
+			<output>propulsion/tank[1]/engine-flow-rate-pps</output>
+		</switch>
+		<summer>
+			<input>propulsion/tank[1]/engine-flow-rate-pps</input> <!--  subtracting -->
+			<input>propulsion/tank[2]/transfer-rate-pps</input> <!--  adding -->			
+			<output>propulsion/tank[1]/external-flow-rate-pps</output>
+		</summer>
+				
+		<switch>
+			<default value="0"/> <!--  MAIN  -->
+			<test logic="AND" value="propulsion/engine[0]/fuel-pump-flow-pps">
+				propulsion/fuel_selector_switch EQ 2
+				propulsion/tank[2]/pct-full GT 0
+				propulsion/tank[0]/pct-full LT 100
+			</test>			
+			<output>propulsion/tank[2]/engine-flow-rate-pps</output>
+		</switch>		
+		<summer>
+			<input>-propulsion/tank[0]/prime-flow-rate-pps</input> <!--  subtracting -->
+			<input>-propulsion/tank[2]/engine-flow-rate-pps</input> <!--  subtracting -->
+			<output>propulsion/tank[2]/engine-flow-rate-pps</output>
+		</summer>
+		<switch>
+			<default value="0"/> <!--  MAIN to 'RESERVE' TRANSFER -->
+			<test logic="AND" value="-propulsion/tank[1]/engine-flow-rate-pps">
+				propulsion/fuel_selector_switch EQ 1
+				propulsion/tank[2]/pct-full GT 0
+			</test>
+			<output>propulsion/tank[2]/transfer-rate-pps</output>
+		</switch>		
+		<summer>
+			<input>propulsion/tank[2]/engine-flow-rate-pps</input> <!--  subtracting -->
+			<input>-propulsion/tank[2]/transfer-rate-pps</input> <!--  subtracting -->
+			<input>propulsion/tank[2]/bypass-flow-rate-pps</input> <!--  adding -->			
+			<output>propulsion/tank[2]/external-flow-rate-pps</output>
+		</summer>
+		
+		<switch>
+			<default value="0"/> <!--  AUXILARY  -->
+			<test logic="AND" value="-propulsion/engine[0]/fuel-pump-flow-pps">
+				propulsion/fuel_selector_switch EQ 3
+				propulsion/tank[3]/pct-full GT 0
+				propulsion/tank[0]/pct-full LT 100
+			</test>			
+			<output>propulsion/tank[3]/engine-flow-rate-pps</output>
+		</switch>
+		<summer>
+			<input>propulsion/tank[3]/engine-flow-rate-pps</input> <!--  subtracting -->		
+			<output>propulsion/tank[3]/external-flow-rate-pps</output>
+		</summer>
+		
+		<summer> <!--  CARBURETOR  -->
+			<input>-propulsion/tank[2]/bypass-flow-rate-pps</input> <!--  subtracting -->		
+			<input>-propulsion/tank[1]/engine-flow-rate-pps</input> <!--  adding -->	
+			<input>-propulsion/tank[2]/engine-flow-rate-pps</input> <!--  adding -->
+			<input>-propulsion/tank[3]/engine-flow-rate-pps</input> <!--  adding -->				
+			<input>-propulsion/tank[4]/engine-flow-rate-pps</input> <!--  adding -->		
+			<output>propulsion/tank[0]/external-flow-rate-pps</output>
+		</summer>
+
+	</channel>
+
+</system>
+

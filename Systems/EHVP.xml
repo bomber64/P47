@@ -1,0 +1,131 @@
+<?xml version="1.0"?>
+
+<!--
+**************************************************************************
+
+Copyright (c) 2016 Simon 'bomber' Morley
+simonbomber64 at googlemail.com
+
+This work is licensed under the 
+Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License. 
+To view a copy of this license, 
+visit http://creativecommons.org/licenses/by-nc-sa/3.0/ or 
+send a letter to Creative Commons, PO Box 1866, Mountain View, Cd 94042, USA.
+
+Attribution,  You must give appropriate credit, provide a link to the license, 
+and indiCdte if changes were made. You may do so in any reasonable manner, 
+but not in any way that suggests the licensor endorses you or your use.
+
+NonCommercial,  You may not use the material for commercial purposes.
+
+ShareAlike,  If you remix, transform, or build upon the material, 
+you must distribute your contributions under the same license as the original. 
+
+**************************************************************************
+-->
+
+<system name="Electrical_Hydraulic_Vacuum_Pneumatic">
+	<!-- Hydraulics -->
+ 	<property type="double" value="1"> propulsion/engine[0]/hydraulic/pump_damage</property>
+	
+	<property type="double" value="0"> flap/venting-psi</property>
+	<property type="double" value="0"> gear/unit[0]/venting-psi</property>	
+	<property type="double" value="0"> gear/unit[1]/venting-psi</property>	
+	<property type="double" value="0"> gear/unit[2]/venting-psi</property>
+	
+	<!-- Pneumatics -->	
+ 	<property type="double" value="1"> pneumatic/low_pressure_damage</property>
+	<property type="double" value="1"> pneumatic/high_pressure_damage</property>	
+	
+    <channel name="Electrical">
+
+
+    </channel>
+
+    <channel name="Hydraulics">
+
+		<!-- Low Pressure Engine Pump-->
+		<fcs_function name="propulsion/engine[0]/hydraulic/pump_charge-psi">
+			<function>
+				<product>
+					<property>propulsion/engine[0]/hydraulic/pump_damage</property>
+					<table>
+						<independentVar>propulsion/engine[0]/engine-rpm</independentVar>
+						<tableData>
+							0      	0
+							500		0.2
+							3000	1
+						</tableData>
+					</table>
+				</product>
+			</function>
+			<output>propulsion/engine[0]/hydraulic/pump_charge-psi</output>
+		</fcs_function>
+
+		<!--  High Pressure Cylinder Charge-Vent -->		
+		
+		<switch name="hydraulic/charge-psi2">
+			<default value="propulsion/engine[0]/hydraulic/pump_charge-psi"/>
+			<test value="0">
+				hydraulic/res_pressure-psi EQ 100
+			</test>			
+		</switch>
+
+		<summer>
+			<input>flap/venting-psi</input> <!--  subtracting -->
+			<input>gear/unit[0]/venting-psi</input> <!--  subtracting -->
+			<input>gear/unit[1]/venting-psi</input> <!--  subtracting -->
+			<input>gear/unit[2]/venting-psi</input> <!--  subtracting -->			
+			<output>hydraulic/vent-psi</output>
+		</summer>
+		<switch name="hydraulic/vent-psi2">
+			<default value="hydraulic/vent-psi"/>
+			<test value="0">
+				hydraulic/res_pressure-psi EQ 0
+			</test>			
+		</switch>		
+
+		<summer>
+			<input>hydraulic/charge-psi2</input> <!--  adding  -->
+			<input>hydraulic/vent-psi2</input> <!--  subtracting -->		
+			<output>hydraulic/charge-or-vent-psi</output>
+		</summer>		
+		
+		<!--  High Pressure Cylinder  -->
+		<integrator name="hydraulic/res_pressure-psi">
+			<input>hydraulic/charge-or-vent-psi</input>
+			<trigger>zero</trigger>
+			<c1>1</c1>
+			<clipto>
+				<min> 0 </min>
+				<max> 100 </max>
+			</clipto>
+			<output>hydraulic/res_pressure-psi</output>
+		</integrator>
+
+    </channel>
+	
+    <channel name="Vacuum">
+
+		<!-- vacuum Pump-->
+		<fcs_function name="propulsion/engine[0]/vacuum/pump_charge-psi">
+			<function>
+				<table>
+					<independentVar>propulsion/engine[0]/pepi</independentVar>
+					<tableData>						
+						0.85   	4
+						1		1
+					</tableData>
+				</table>
+			</function>
+			<output>propulsion/engine[0]/vacuum/pump_charge-psi</output>
+		</fcs_function>
+		
+    </channel>
+
+    <channel name="Pneumatics">
+
+
+    </channel>
+	
+</system>
